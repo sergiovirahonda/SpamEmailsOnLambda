@@ -1,0 +1,28 @@
+service: spam-ham
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: us-east-1
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+
+functions:
+ lambda-spam-ham:
+  name: spam-ham
+  handler : handler.lambda_handler
+  events:
+    - http: 
+        path: predict
+        method: get
+
+plugins:
+  - serverless-python-requirements
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
